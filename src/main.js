@@ -75,7 +75,21 @@ const numbermaskoptions = {
     const foundmask = dynamicMasked.compiledMasks.find(function (item) {
       return number.match(item.regex)
     })
-    console.log(foundmask)
+    setCardType(foundmask.cardtype)
+    if (foundmask.cardtype == 'elo') {
+      svg.style.border = '2px solid #FFCB05'
+      svg.style.borderRadius = '14px'
+    } else if (foundmask.cardtype == 'mastercard') {
+      svg.style.border = '2px solid #FF7D05'
+      svg.style.borderRadius = '14px'
+    } else if (foundmask.cardtype == 'visa') {
+      svg.style.border = '2px solid #00A4E0'
+      svg.style.borderRadius = '14px'
+    } else if (foundmask.cardtype == 'default') {
+      svg.style.border = 'none'
+      svg.style.borderRadius = '14px'
+    }
+
     return foundmask
   },
 }
