@@ -11,11 +11,45 @@ const titularcard = document.querySelector('.cc-holder .value')
 const expirationCard = document.querySelector('.cc-expiration .value')
 const securityval = document.querySelector('.cc-security .value')
 
+const buttonAdd = document.querySelector('#btn-add-card')
+
 //inputs
 const cardNumber = document.querySelector('#card-number')
 const titular = document.querySelector('#card-holder')
+
 const validade = document.querySelector('#expiration-date')
 const cvc = document.querySelector('#security-code')
+
+//FUNÇÃO QUE SETA AS CORES DO CARD APARTIR DO TIPO
+function setCardType(type) {
+  const cardscolors = {
+    visa: ['#2D57F2', '2D57F2'],
+    mastercard: ['#C69347', '#DF6F29'],
+    elo: ['#EF4123', '#00A4E0'],
+    default: ['black', 'gray'],
+  }
+
+  bgcolor1.setAttribute('fill', cardscolors[type][0])
+  bgcolor2.setAttribute('fill', cardscolors[type][1])
+  flagcard.setAttribute('src', `cc-${type}.svg`)
+
+  if (type == 'elo') {
+    svg.style.border = '2px solid #FFCB05'
+    svg.style.borderRadius = '14px'
+  } else if (type == 'mastercard') {
+    svg.style.border = '2px solid #FF7D05'
+    svg.style.borderRadius = '14px'
+  } else if (type == 'visa') {
+    svg.style.border = '2px solid #00A4E0'
+    svg.style.borderRadius = '14px'
+  } else if (type == 'default') {
+    svg.style.border = 'none'
+    svg.style.borderRadius = '14px'
+  }
+}
+
+//ADICIONADO FUNÇÃO NO GLOBALTHIS
+globalThis.setCardType = setCardType
 
 // ----  MASKs ------
 
@@ -75,38 +109,49 @@ const numbermaskoptions = {
     const foundmask = dynamicMasked.compiledMasks.find(function (item) {
       return number.match(item.regex)
     })
-    setCardType(foundmask.cardtype)
-    if (foundmask.cardtype == 'elo') {
-      svg.style.border = '2px solid #FFCB05'
-      svg.style.borderRadius = '14px'
-    } else if (foundmask.cardtype == 'mastercard') {
-      svg.style.border = '2px solid #FF7D05'
-      svg.style.borderRadius = '14px'
-    } else if (foundmask.cardtype == 'visa') {
-      svg.style.border = '2px solid #00A4E0'
-      svg.style.borderRadius = '14px'
-    } else if (foundmask.cardtype == 'default') {
-      svg.style.border = 'none'
-      svg.style.borderRadius = '14px'
-    }
-
     return foundmask
   },
 }
-const numbergmasked = IMask(cardNumber, numbermaskoptions)
+const cardnumbermasked = IMask(cardNumber, numbermaskoptions)
 
-function setCardType(type) {
-  const cardscolors = {
-    visa: ['#2D57F2', '2D57F2'],
-    mastercard: ['#C69347', '#DF6F29'],
-    default: ['black', 'gray'],
-    elo: ['#EF4123', '#00A4E0'],
-  }
+//Eventos
 
-  bgcolor1.setAttribute('fill', cardscolors[type][0])
-  bgcolor2.setAttribute('fill', cardscolors[type][1])
-  flagcard.setAttribute('src', `cc-${type}.svg`)
+buttonAdd.addEventListener('click', (event) => {
+  alert('Cartão adicionado!')
+})
+
+document.querySelector('form').addEventListener('submit', (event) => {
+  event.preventDefault()
+})
+
+titular.addEventListener('input', () => {
+  titularcard.innerText =
+    titular.value.length === 0 ? 'NOME DO TITULAR' : titular.value
+})
+
+cvcmasked.on('accept', () => {
+  updateCVC(cvcmasked.value)
+})
+
+function updateCVC(code) {
+  securityval.innerText = code.length === 0 ? '123' : code
 }
 
-setCardType('elo')
-globalThis.setCardType = setCardType
+cardnumbermasked.on('accept', () => {
+  const cardt = cardnumbermasked.masked.currentMask.cardtype
+
+  setCardType(cardt)
+  updateCardNumber(cardnumbermasked.value)
+})
+
+function updateCardNumber(numero) {
+  numbercard.innerText = numero.length === 0 ? '1234 5678 9012 3456' : numero
+}
+
+validademasked.on('accept', () => {
+  updateValidatecard(validademasked.value)
+})
+
+function updateValidatecard(date) {
+  expirationCard.innerText = date.length === 0 ? '02/32' : date
+}
