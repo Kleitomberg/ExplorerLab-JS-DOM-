@@ -1,4 +1,3 @@
-
 <p align="center">
   <img alt="License" src="./public/logo.svg">
 </p>
@@ -46,10 +45,15 @@ Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figm
 
 ## Deploy
 
-Acesse o link baixo para testar a aplicação em tempo real!
+Acesse um dos links baixo para testar a aplicação em tempo real!
+
+### Testar usando Netlify
 
 [Clique aqui!](https://effulgent-otter-bfe9da.netlify.app/)
 
+### Testar usando Vercel
+
+[Clique aqui!](https://kabehpay.vercel.app/)
 
 ## :memo: Licença
 
